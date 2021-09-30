@@ -1,6 +1,6 @@
 # cdds
 
-A new Flutter project.
+A counterfiet drug detection app.
 
 ## Getting Started
 
