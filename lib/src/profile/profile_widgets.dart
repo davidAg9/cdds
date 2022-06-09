@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileWidget extends StatelessWidget {
-  final String name;
+  final String? name;
   final bool isEdit;
   final VoidCallback onClicked;
 

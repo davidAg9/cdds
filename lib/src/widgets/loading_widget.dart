@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -29,5 +31,13 @@ class _CDDSLoadingWidgetState extends State<CDDSLoadingWidget> with SingleTicker
         controller: _controller,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    log("calling stop");
+    // _controller?.stop();
+    _controller?.dispose();
+    super.dispose();
   }
 }

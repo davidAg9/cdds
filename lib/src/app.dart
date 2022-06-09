@@ -58,7 +58,8 @@ class CDDSAPP extends StatelessWidget {
             //
             // The appTitle is defined in .arb files found in the localization
             // directory.
-            onGenerateTitle: (BuildContext context) => AppLocalizations.of(context)!.appTitle,
+            onGenerateTitle: (BuildContext context) =>
+                AppLocalizations.of(context)!.appTitle,
 
             // Define a light and dark color theme. Then, read the user's
             // preferred ThemeMode (light, dark, or system default) from the
@@ -85,22 +86,24 @@ class CDDSAPP extends StatelessWidget {
                     case SettingsView.routeName:
                       return SettingsView(controller: settingsController);
                     case HomeView.routeName:
-                      return HomeView(
-                        user: routeSettings.arguments as CDDSUSER,
-                      );
+                      return HomeView();
                     case DrugSearchView.routeName:
                       return DrugSearchView();
                     case ScanHistoryDetails.routeName:
-                      return const ScanHistoryDetails();
+                      return ScanHistoryDetails(
+                        drug: routeSettings.arguments as Drug,
+                      );
                     case ScanHistory.routeName:
-                      return ScanHistory(drugs: routeSettings.arguments as List<Drug>);
+                      return ScanHistory(
+                          drugs: routeSettings.arguments as List<Drug>);
                     case ProfileView.routeName:
-                      return ProfileView(user: routeSettings.arguments as CDDSUSER);
+                      return ProfileView(
+                          user: routeSettings.arguments as CDDSUSER);
                     case SignInView.routeName:
                       return const SignInView();
 
                     default:
-                      return const SignInView();
+                      return ScanHistory();
                   }
                 },
               );

@@ -153,7 +153,7 @@ class DrugSearchView extends StatelessWidget {
                           onPressed: () {
                             context
                                 .read<CddsDrugSearchBloc>()
-                                .add(SearchForDrug(serialORbarcodeNumber: _query ?? ""));
+                                .add(SearchForDrug(drugName: _query ?? ""));
                             _searchBarController.open();
                           },
                         ),
@@ -170,18 +170,29 @@ class DrugSearchView extends StatelessWidget {
                       ),
                     ],
                     builder: (context, transition) {
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Material(
-                          color: Colors.white,
-                          elevation: 4.0,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: Colors.accents.map((color) {
-                              return Container(height: 112, color: color);
-                            }).toList(),
-                          ),
-                        ),
+                      return BlocBuilder<CddsDrugSearchBloc, CddsDrugSearchState>(
+                        builder: (context, state) {
+                          if (state is CddsDrugSearchLoaded) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Material(
+                                  color: Colors.white,
+                                  elevation: 4.0,
+                                  child: ListTile(
+                                    title: Text(state.drug.name),
+                                    subtitle: Text(state.drug.strength),
+                                  )),
+                            );
+                          } else {
+                            return SizedBox(
+                              height: 20.h,
+                              width: 50.w,
+                              child: const Center(
+                                child: Text("No Result"),
+                              ),
+                            );
+                          }
+                        },
                       );
                     },
                   );

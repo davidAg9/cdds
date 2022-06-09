@@ -6,7 +6,9 @@ import 'package:cdds/src/widgets/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({Key? key, required this.user}) : super(key: key);
+  const HomeView(
+      {Key? key, this.user = const CDDSUSER(id: "id", email: "email@gmail.com", name: "Test App")})
+      : super(key: key);
   final CDDSUSER user;
   static const String routeName = "/home";
 

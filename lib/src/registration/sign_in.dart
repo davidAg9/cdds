@@ -1,5 +1,4 @@
 import 'package:cdds/injection.dart';
-import 'package:cdds/src/model/user.dart';
 import 'package:cdds/src/registration/bloc/registration_bloc.dart';
 import 'package:cdds/src/widgets/loading_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,17 +19,17 @@ class SignInView extends StatelessWidget {
           body: BlocConsumer<RegistrationBloc, RegistrationState>(
         listener: (context, state) {
           if (state is SignedState) {
-            Navigator.restorablePushNamed(
+            Navigator.pushNamed(
               context,
               "/home",
               arguments: state.user,
             );
           } else if (state is RegistrationError) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.red,
                 content: Text(
                   "Could Not Sign In,Try Again",
-                  style: TextStyle(color: Colors.redAccent),
+                  style: TextStyle(color: Colors.white),
                 )));
           }
         },
@@ -72,12 +71,7 @@ class SignInView extends StatelessWidget {
                         TextStyle(letterSpacing: 3, fontWeight: FontWeight.bold, fontSize: 14.sp),
                   ),
                   onPressed: () {
-                    // context.read<RegistrationBloc>().add(const CddsSignInAnonymous());
-                    Navigator.pushNamed(
-                      context,
-                      "/home",
-                      arguments: const CDDSUSER(id: "id", email: "Sam@someth.com").toDocument(),
-                    );
+                    context.read<RegistrationBloc>().add(const CddsSignInAnonymous());
                   },
                 ),
                 Padding(
@@ -191,7 +185,9 @@ class SignInView extends StatelessWidget {
                     style:
                         TextStyle(letterSpacing: 3, fontWeight: FontWeight.bold, fontSize: 14.sp),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<RegistrationBloc>().add(const CddsSignInAnonymous());
+                  },
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: 2.h, top: 5.h),
@@ -223,7 +219,9 @@ class SignInView extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<RegistrationBloc>().add(CddsSignInApple());
+                  },
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.black)),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -240,7 +238,9 @@ class SignInView extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<RegistrationBloc>().add(CddsSignInGoogle());
+                  },
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white70)),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,

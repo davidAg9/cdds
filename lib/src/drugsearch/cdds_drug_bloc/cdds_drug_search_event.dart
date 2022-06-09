@@ -8,13 +8,12 @@ abstract class CddsDrugSearchEvent extends Equatable {
 }
 
 class SearchForDrug extends CddsDrugSearchEvent {
-  final String? drugName;
-  final String? serialORbarcodeNumber;
+  final String drugName;
 
-  const SearchForDrug({this.drugName, this.serialORbarcodeNumber});
+  const SearchForDrug({required this.drugName,});
 
   @override
-  List<Object?> get props => [drugName, serialORbarcodeNumber];
+  List<Object?> get props => [drugName];
 }
 
 class SearchForWithScan extends CddsDrugSearchEvent {}

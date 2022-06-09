@@ -11,8 +11,9 @@ GetIt dp = GetIt.instance;
 
 Future<void> initDep() async {
   //!bloc dependencies
-  dp.registerSingleton<CddsQrScannerCubit>(CddsQrScannerCubit());
-  dp.registerFactory<CddsDrugSearchBloc>(() => CddsDrugSearchBloc(dp()));
+  dp.registerFactory<CddsQrScannerCubit>(() => CddsQrScannerCubit());
+  dp.registerFactory<CddsDrugSearchBloc>(
+      () => CddsDrugSearchBloc(qrScannerCubit: dp(), drugDb: dp()));
   dp.registerFactory<RegistrationBloc>(
       () => RegistrationBloc(registerService: dp(), userService: dp()));
   //!services

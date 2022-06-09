@@ -55,8 +55,13 @@ class RegistrationDatabaseService implements RegistrationDatabaseInterface {
 
   @override
   Future<CDDSUSER> signInGoogly() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
+    final GoogleSignInAccount? googleUser = await GoogleSignIn(
+      signInOption: SignInOption.standard,
+      scopes: ['email', 'profile'],
+      hostedDomain: "",
+      clientId: "",
+    ).signIn();
+    log("Started google login");
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
@@ -65,7 +70,7 @@ class RegistrationDatabaseService implements RegistrationDatabaseInterface {
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
-
+    log("gotton oath credential");
     // Once signed in, return the UserCredential
     final userCredentials = await authInstance.signInWithCredential(credential);
     return CDDSUSER(

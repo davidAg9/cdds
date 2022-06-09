@@ -3,18 +3,24 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cdds/src/drugsearch/qr_scanner_cubit/cdds_qr_scanner_cubit.dart';
 import 'package:cdds/src/model/drug.dart';
+import 'package:cdds/src/services/drug_database_service.dart';
 import 'package:equatable/equatable.dart';
 
 part 'cdds_drug_search_event.dart';
 part 'cdds_drug_search_state.dart';
 
 class CddsDrugSearchBloc extends Bloc<CddsDrugSearchEvent, CddsDrugSearchState> {
-  CddsDrugSearchBloc(this.qrScannerCubit) : super(CddsDrugSearchInitial()) {
-    on<SearchForDrug>((event, emit) {
-      if (event.drugName != null) {
-        //TODO:search for drug name
-      } else if (event.serialORbarcodeNumber != null) {
-        //TODO:search for serial number
+  CddsDrugSearchBloc({required this.qrScannerCubit, required this.drugDb})
+      : super(CddsDrugSearchInitial()) {
+    on<SearchForDrug>((event, emit) async {
+      emit(CddsDrugSearchLoading());
+      try {
+        final result = await drugDb.findDrug(event.drugName);
+        if (result != null) {
+          emit(CddsDrugSearchLoaded(result));
+        }
+      } catch (e) {
+        emit(CddsDrugSearchError());
       }
     });
     on<SearchForWithScan>((event, emit) async {
@@ -24,7 +30,7 @@ class CddsDrugSearchBloc extends Bloc<CddsDrugSearchEvent, CddsDrugSearchState> 
         if (state is CddsQrScannerScanning) {
           emit(CddsDrugSearchLoading());
         } else if (state is CddsQrScannerComplete) {
-          add(SearchForDrug(serialORbarcodeNumber: state.resultText));
+          add(SearchForDrug(drugName: state.resultText));
         } else if (state is CddsQrScannerError) {
           emit(CddsDrugSearchError());
         }
@@ -33,7 +39,7 @@ class CddsDrugSearchBloc extends Bloc<CddsDrugSearchEvent, CddsDrugSearchState> 
   }
   final CddsQrScannerCubit qrScannerCubit;
   StreamSubscription<CddsQrScannerState>? qrScannerSubcription;
-
+  final DrugDatabaseInterface drugDb;
   @override
   Future<void> close() {
     qrScannerSubcription?.cancel();
